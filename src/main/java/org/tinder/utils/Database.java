@@ -59,12 +59,23 @@ public class Database {
         return this;
     }
 
-    public Database migrate() throws DatabaseException {
+    public Database baseline() throws DatabaseException {
         if (flyway == null) {
             throw new DatabaseException("Missing flyway instance");
         }
         try {
             flyway.baseline();
+        } catch (FlywayException ex) {
+            throw new DatabaseException(ex);
+        }
+        return this;
+    }
+
+    public Database migrate() throws DatabaseException {
+        if (flyway == null) {
+            throw new DatabaseException("Missing flyway instance");
+        }
+        try {
             flyway.migrate();
             System.out.println("db migrated...");
         } catch (FlywayException ex) {

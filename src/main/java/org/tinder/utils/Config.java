@@ -5,8 +5,8 @@ import java.util.Optional;
 public class Config {
     enum ConfigKeys {
         PORT("PORT", "8080"),
-        DB_URI("DB_HOST", "jdbc:postgresql://localhost:5432"),
-        DB_NAME("DB_NAME", "tinder"),
+        DB_URI("DB_HOST", "jdbc:postgresql://tinder-dev.ckej7ilphtof.eu-central-1.rds.amazonaws.com:5432"),
+        DB_NAME("DB_NAME", "dev"),
         DB_USER("DB_USER", "postgres"),
         DB_PASSWORD("DB_PASSWORD", "12345678");
 
