@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+chmod ug+x .githooks/*
 chmod ug+x .git/hooks/*
 
 # Set colors
