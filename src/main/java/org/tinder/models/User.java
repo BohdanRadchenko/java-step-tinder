@@ -1,8 +1,6 @@
 package org.tinder.models;
 
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.UUID;
 
 public class User extends Model {

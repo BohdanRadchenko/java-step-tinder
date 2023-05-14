@@ -1,6 +1,6 @@
 package org.tinder.models;
 
-abstract public class Model {
+public abstract class Model {
     private final Integer id;
 
     protected Model(Integer id) {
