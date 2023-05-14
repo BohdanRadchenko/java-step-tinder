@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+chmod ug+x .git/hooks/*
 
 # Set colors
 GREEN='\033[1;32m'
