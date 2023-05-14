@@ -12,6 +12,12 @@
 git clone git@github.com:BohdanRadchenko/java-step-tinder.git
 ```
 
+Enable custom git config
+mac
+```
+sh .gitconfig.sh
+```
+
 ## Tests
 
 Run unit tests with the commands below
