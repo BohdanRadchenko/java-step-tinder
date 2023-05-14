@@ -25,7 +25,8 @@ public class StaticServlet extends HttpServlet {
         Path file = Path.of(osStaticLocation, pathInfo);
 
         if (!file.toFile().exists()) {
-            resp.setStatus(404);
+            int statusCode = 404;
+            resp.setStatus(statusCode);
         } else {
             try (ServletOutputStream os = resp.getOutputStream()) {
                 Files.copy(file, os);

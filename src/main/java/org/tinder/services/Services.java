@@ -1,9 +1,5 @@
 package org.tinder.services;
 
-import org.tinder.utils.Database;
-
-import java.sql.Connection;
-
 public final class Services {
     public final UserService user;
 

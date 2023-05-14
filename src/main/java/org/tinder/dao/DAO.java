@@ -6,7 +6,7 @@ import org.tinder.models.Model;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-abstract public class DAO<T extends Model> implements IDAO<T> {
+public abstract class DAO<T extends Model> implements IDAO<T> {
     public final Connection connection;
 
     public DAO(Connection connection) {
