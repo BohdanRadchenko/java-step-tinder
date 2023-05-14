@@ -1,4 +1,4 @@
-# Tinder - java basic step project
+# Tinder - [java web step project](https://github.com/BohdanRadchenko/java-step-tinder)
 
 ## Requirements
 
@@ -9,7 +9,7 @@
 ### Git clone
 
 ```
-git clone https://github.com/BohdanRadchenko/java-step-booking.git booking
+git clone git@github.com:BohdanRadchenko/java-step-tinder.git
 ```
 
 ## Tests
