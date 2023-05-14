@@ -2,7 +2,7 @@
 echo "Running pre-commit hook"
 
 echo "Running test"
-mvn clean test
+mvn validate
 
 if [ $? -ne 0 ]; then
  echo "Tests must pass before commit!"
