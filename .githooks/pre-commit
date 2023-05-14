@@ -2,7 +2,7 @@
 echo "Running pre-commit hook"
 
 echo "Running test"
-mvn validate
+mvn -B package --file pom.xml
 
 if [ $? -ne 0 ]; then
  echo "Tests must pass before commit!"
