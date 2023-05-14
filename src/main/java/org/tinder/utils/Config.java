@@ -9,7 +9,8 @@ public class Config {
         DB_NAME("DB_NAME", "dev"),
         DB_USER("DB_USER", "postgres"),
         DB_PASSWORD("DB_PASSWORD", "12345678"),
-        ACCESS_TOKEN_SECRET_KEY("ACCESS_TOKEN_SECRET", "dSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t");
+        ACCESS_TOKEN_SECRET_KEY("ACCESS_TOKEN_SECRET", "dSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t"),
+        PASSWORD_HASH_KEY("PASSWORD_HASH_KEY", "C4xw969yaZ7U7fOoXJMRKAZ7U7fOoXJM");
 
         private final String key;
         private final String defaultValue;
@@ -56,5 +57,9 @@ public class Config {
 
     public static String getAccessTokenKey() {
         return getEnvByKey(ConfigKeys.ACCESS_TOKEN_SECRET_KEY);
+    }
+
+    public static String getPasswordHashKey() {
+        return getEnvByKey(ConfigKeys.PASSWORD_HASH_KEY);
     }
 }

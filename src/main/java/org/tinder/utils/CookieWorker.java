@@ -25,6 +25,7 @@ public final class CookieWorker {
 
     public static void auth(HttpServletResponse res, String token) {
         Cookie cookie = new Cookie(CookieNames.AUTH_TOKEN.getValue(), token);
+        cookie.setMaxAge(Constants.AUTH_EXPIRED_TIME);
         res.addCookie(cookie);
         res.addHeader("Access-Control-Expose-Headers", "Set-Cookie");
     }

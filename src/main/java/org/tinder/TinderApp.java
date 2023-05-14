@@ -29,7 +29,8 @@ public class TinderApp {
             server.addServlet(new HomeServlet(), ServletPath.HOME, new HomeRequestFilter());
 
             // Auth
-            server.addServlet(new LogoutServlet(), ServletPath.LOGOUT, new AuthRequestFilter());
+            server.addServlet(new LogoutServlet(), ServletPath.LOGOUT, new AuthRequestFilter(services));
+            server.addServlet(new LoginServlet(services), ServletPath.LOGIN);
 
 
 

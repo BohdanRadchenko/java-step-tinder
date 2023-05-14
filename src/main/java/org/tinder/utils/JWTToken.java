@@ -59,12 +59,8 @@ public class JWTToken {
         return new JWTToken(secret);
     }
 
-    public static DecodedJWT verify(String token, String secret) throws RuntimeException {
+    public static DecodedJWT verify(String token, String secret) throws JWTVerificationException {
         JWTToken jwt = JWTToken.of(secret);
-        try {
-            return jwt.verify(token);
-        } catch (JWTVerificationException e) {
-            throw new RuntimeException(e);
-        }
+        return jwt.verify(token);
     }
 }
