@@ -2,6 +2,7 @@ package org.tinder;
 
 import org.tinder.enums.ServletPath;
 import org.tinder.exceptions.DatabaseException;
+import org.tinder.filters.AuthRequestFilter;
 import org.tinder.filters.HomeRequestFilter;
 import org.tinder.services.Services;
 import org.tinder.servlets.*;
@@ -26,6 +27,10 @@ public class TinderApp {
 
             // home
             server.addServlet(new HomeServlet(), ServletPath.HOME, new HomeRequestFilter());
+
+            // Auth
+            server.addServlet(new LogoutServlet(), ServletPath.LOGOUT, new AuthRequestFilter());
+
 
 
             server.start();
