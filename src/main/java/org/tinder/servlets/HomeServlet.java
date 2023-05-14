@@ -1,6 +1,5 @@
 package org.tinder.servlets;
 
-import org.tinder.services.Services;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
