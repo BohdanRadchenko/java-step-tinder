@@ -1,5 +1,6 @@
 package org.tinder.dao;
 
+import org.tinder.interfaces.DAO;
 import org.tinder.models.User;
 import org.tinder.utils.SqlRequest;
 
@@ -8,10 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class UserDao extends DAO<User> {
+public class UserDao implements DAO<User> {
+    private final Connection connection;
 
     public UserDao(Connection connection) {
-        super(connection);
+        this.connection = connection;
     }
 
     @Override
@@ -33,16 +35,16 @@ public class UserDao extends DAO<User> {
     }
 
     @Override
-    public boolean delete(String id) throws SQLException {
+    public boolean delete(Integer id) throws SQLException {
         throw new RuntimeException("Not implement");
     }
 
     @Override
-    public Optional<User> getById(String id) throws SQLException {
+    public Optional<User> getById(Integer id) throws SQLException {
         String sql = "SELECT id, login, email, password FROM users WHERE id = ?";
         ResultSet rs = SqlRequest
                 .of(connection, sql)
-                .setString(id)
+                .setInt(id)
                 .query();
         if (!rs.next()) {
             return Optional.empty();
@@ -75,5 +77,9 @@ public class UserDao extends DAO<User> {
         } else {
             return Optional.of(User.load(rs));
         }
+    }
+
+    public static UserDao of(Connection connection) {
+        return new UserDao(connection);
     }
 }
