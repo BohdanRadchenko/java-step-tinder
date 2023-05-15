@@ -1,8 +1,8 @@
 package org.tinder.services;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.tinder.dao.UserDao;
+import org.tinder.exceptions.AlreadyExistException;
 import org.tinder.exceptions.DatabaseException;
 import org.tinder.exceptions.NotFoundException;
 import org.tinder.models.User;
@@ -29,10 +29,18 @@ public class UserService {
         }
     }
 
-    public User getFromToken(String token) throws DatabaseException, JWTVerificationException {
+    public User login(String token) throws NotFoundException, IllegalArgumentException {
         DecodedJWT decode = JWTToken.verify(token, Config.getAccessTokenKey());
         String uuid = decode.getClaim("uuid").asString();
-        return getByUuId(uuid);
+        String email = decode.getClaim("email").asString();
+        String password = decode.getClaim("password").asString();
+        User user = getByUuId(uuid);
+        boolean equalsEmail = user.getEmail().equals(email);
+        boolean equalsPassword = user.getPassword().equals(password);
+        if(!equalsEmail || !equalsPassword) {
+            throw new IllegalArgumentException("Invalid login data");
+        }
+        return user;
     }
 
     public User login(String email, String password) throws NotFoundException, IllegalArgumentException, DatabaseException {
@@ -46,6 +54,25 @@ public class UserService {
             if (!enc.check(password, user.getPassword())) {
                 throw new IllegalArgumentException("Invalid password");
             }
+            return user;
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex);
+        }
+    }
+
+    public User register(String login, String email, String password) throws DatabaseException, AlreadyExistException {
+        Encryptor encryptor = new Encryptor(Config.getPasswordHashKey());
+        String hashedPassword = encryptor.hash(password);
+        User user = User.create(login, email, hashedPassword);
+
+        try {
+            Optional<User> userIn = db.getByEmailOrLogin(email, login);
+
+            if (userIn.isPresent()) {
+                throw new AlreadyExistException("User already exist!");
+            }
+
+            if (db.create(user) < 1) throw new DatabaseException("Oops... Something wrong!");
             return user;
         } catch (SQLException ex) {
             throw new DatabaseException(ex);

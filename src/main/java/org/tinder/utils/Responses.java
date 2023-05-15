@@ -53,6 +53,6 @@ public class Responses {
     }
 
     public static void redirect(HttpServletResponse res, ServletPath to) throws IOException {
-        res.sendRedirect(to.getPath());
+        res.sendRedirect(to.path());
     }
 }

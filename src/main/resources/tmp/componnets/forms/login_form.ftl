@@ -3,7 +3,7 @@
 
     <label for="inputEmail" class="sr-only">Email</label>
     <input
-            name="${emailParam}"
+            name="${EMAIL}"
             type="email"
             id="inputEmail"
             class="form-control"
@@ -12,12 +12,12 @@
             autofocus
     >
     <label for="inputPassword" class="sr-only">Password</label>
-    <input name="${passwordParam}" type="password" id="inputPassword" class="form-control" placeholder="Password"
+    <input name="${PASSWORD}" type="password" id="inputPassword" class="form-control" placeholder="Password"
            required>
 
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 
     <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account?
-        <a href="${registerLinkParam}" class="link-danger">Register</a>
+        <a href="${REGISTER_LINK}" class="link-danger">Register</a>
     </p>
 </form>

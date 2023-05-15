@@ -5,6 +5,23 @@ body {
     display: flex;
     margin: 0;
     padding: 0;
+    background-color: rgb(251,251,251);
+}
+
+header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 12px 0 rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.05);
+    padding: 4px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav {
+    display: flex;
 }
 
 .container {
@@ -16,6 +33,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #fff;
+}
+
+.container.auth {
+    background-color: transparent;
 }
 
 .form-signin,
@@ -25,6 +47,7 @@ body {
     padding: 15px;
     margin: auto;
     text-align: center;
+    background-color: #fff;
 }
 
 .form-signup {

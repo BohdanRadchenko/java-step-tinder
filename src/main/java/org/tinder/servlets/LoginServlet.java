@@ -23,9 +23,9 @@ public class LoginServlet extends ServicesServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("emailParam", ServletParams.EMAIL.getParam());
-        data.put("passwordParam", ServletParams.PASSWORD.getParam());
-        data.put("registerLinkParam", ServletPath.REGISTER.getPath());
+        data.put(ServletParams.EMAIL.name(), ServletParams.EMAIL.param());
+        data.put(ServletParams.PASSWORD.name(), ServletParams.PASSWORD.param());
+        data.put(ServletParams.REGISTER_LINK.name(), ServletParams.REGISTER_LINK.param());
 
         try (PrintWriter w = resp.getWriter()) {
             FMTemplate
@@ -38,8 +38,8 @@ public class LoginServlet extends ServicesServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String email = req.getParameter(ServletParams.EMAIL.getParam());
-        String password = req.getParameter(ServletParams.PASSWORD.getParam());
+        String email = req.getParameter(ServletParams.EMAIL.param());
+        String password = req.getParameter(ServletParams.PASSWORD.param());
         try {
             User user = services.user.login(email, password);
             JWTToken token = JWTToken.of(Config.getAccessTokenKey(), Constants.AUTH_EXPIRED_TIME);

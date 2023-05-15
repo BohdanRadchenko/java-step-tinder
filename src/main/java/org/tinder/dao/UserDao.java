@@ -16,7 +16,16 @@ public class UserDao extends DAO<User> {
 
     @Override
     public int create(User user) throws SQLException {
-        throw new RuntimeException("Not implement");
+        String sql = "INSERT INTO users (uuid, login, email, password) values (?, ?, ?, ?)";
+        return SqlRequest
+                .of(connection, sql)
+                .setString(
+                        user.getUuidString(),
+                        user.getLogin(),
+                        user.getEmail(),
+                        user.getPassword()
+                )
+                .update();
     }
 
     @Override
@@ -52,6 +61,19 @@ public class UserDao extends DAO<User> {
         ResultSet rs = SqlRequest
                 .of(connection, sql)
                 .setString(email)
+                .query();
+        if (!rs.next()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(User.load(rs));
+        }
+    }
+
+    public Optional<User> getByEmailOrLogin(String email, String login) throws SQLException {
+        String sql = "SELECT id, uuid, login, email, password FROM users WHERE email = ? OR login = ? ";
+        ResultSet rs = SqlRequest
+                .of(connection, sql)
+                .setString(email, login)
                 .query();
         if (!rs.next()) {
             return Optional.empty();

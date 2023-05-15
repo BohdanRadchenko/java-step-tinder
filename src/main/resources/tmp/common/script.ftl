@@ -10,5 +10,12 @@
 
 <#macro login>
     <@fetch/>
+    <@toastify/>
     <script src="static/js/login.js" defer></script>
+</#macro>
+
+<#macro register>
+    <@fetch/>
+    <@toastify/>
+    <script src="static/js/register.js" defer></script>
 </#macro>
