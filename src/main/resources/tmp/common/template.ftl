@@ -32,10 +32,8 @@
 
 <#macro body_auth>
     <body>
-    <div class="container">
-        <div>
-            HEADER HERE
-        </div>
+    <div class="container auth">
+        <#include "../componnets/header.ftl">
         <#nested>
     </div>
     </body>

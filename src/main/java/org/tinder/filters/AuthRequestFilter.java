@@ -21,7 +21,7 @@ public class AuthRequestFilter extends RequestFilter {
     boolean accept(HttpServletRequest req, HttpServletResponse res) {
         try {
             String token = CookieWorker.getCookieOrThrow(req, CookieNames.AUTH_TOKEN);
-            services.user.getFromToken(token);
+            services.user.login(token);
             return true;
         } catch (Exception ex) {
             return false;

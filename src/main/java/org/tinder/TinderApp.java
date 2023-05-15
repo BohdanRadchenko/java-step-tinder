@@ -3,7 +3,6 @@ package org.tinder;
 import org.tinder.enums.ServletPath;
 import org.tinder.exceptions.DatabaseException;
 import org.tinder.filters.AuthRequestFilter;
-import org.tinder.filters.HomeRequestFilter;
 import org.tinder.services.Services;
 import org.tinder.servlets.*;
 import org.tinder.utils.Config;
@@ -18,7 +17,7 @@ public class TinderApp {
                     .migrate()
                     .connect();
 
-            AppServer server = new AppServer(Config.getPort());
+            HTTPServer server = new HTTPServer(Config.getPort());
 
             Services services = Services.create();
 
@@ -26,11 +25,12 @@ public class TinderApp {
             server.addServlet(new StaticServlet(ResourcesOps.dir("static")), ServletPath.STATIC);
 
             // home
-            server.addServlet(new HomeServlet(), ServletPath.HOME, new HomeRequestFilter());
+            server.addServlet(new HomeServlet(), ServletPath.HOME);
 
             // Auth
             server.addServlet(new LogoutServlet(), ServletPath.LOGOUT, new AuthRequestFilter(services));
             server.addServlet(new LoginServlet(services), ServletPath.LOGIN);
+            server.addServlet(new RegisterServlet(services), ServletPath.REGISTER);
 
 
 

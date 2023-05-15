@@ -13,17 +13,17 @@ import javax.servlet.Filter;
 import javax.servlet.http.HttpServlet;
 import java.util.EnumSet;
 
-public class AppServer {
+public class HTTPServer {
     private final Server server;
     private final ServletContextHandler handler;
 
-    public AppServer(int port) {
+    public HTTPServer(int port) {
         server = new Server(port);
         handler = new ServletContextHandler();
     }
 
     public void addFilter(Filter filter, ServletPath servletPath, EnumSet<DispatcherType> dispatcherTypes) {
-        handler.addFilter(new FilterHolder(filter), servletPath.getPath(), dispatcherTypes);
+        handler.addFilter(new FilterHolder(filter), servletPath.path(), dispatcherTypes);
     }
 
     public void addFilter(Filter filter, ServletPath servletPath) {
@@ -35,18 +35,18 @@ public class AppServer {
         for (HttpFilter filter : filters) {
             addFilter(filter, servletPath);
         }
-        handler.addServlet(new ServletHolder(servlet), servletPath.getPath());
+        handler.addServlet(new ServletHolder(servlet), servletPath.path());
     }
 
     public void addServlet(HttpServlet servlet, ServletPath servletPath, RequestFilter... filters) {
         for (RequestFilter filter : filters) {
             addFilter(filter.of(), servletPath);
         }
-        handler.addServlet(new ServletHolder(servlet), servletPath.getPath());
+        handler.addServlet(new ServletHolder(servlet), servletPath.path());
     }
 
     public void addServlet(HttpServlet servlet, ServletPath servletPath) {
-        handler.addServlet(new ServletHolder(servlet), servletPath.getPath());
+        handler.addServlet(new ServletHolder(servlet), servletPath.path());
     }
 
     public void start() throws Exception {
