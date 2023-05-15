@@ -8,7 +8,9 @@ public class Config {
         DB_URI("DB_HOST", "jdbc:postgresql://tinder-dev.ckej7ilphtof.eu-central-1.rds.amazonaws.com:5432"),
         DB_NAME("DB_NAME", "dev"),
         DB_USER("DB_USER", "postgres"),
-        DB_PASSWORD("DB_PASSWORD", "12345678");
+        DB_PASSWORD("DB_PASSWORD", "12345678"),
+        ACCESS_TOKEN_SECRET_KEY("ACCESS_TOKEN_SECRET", "dSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t"),
+        PASSWORD_HASH_KEY("PASSWORD_HASH_KEY", "C4xw969yaZ7U7fOoXJMRKAZ7U7fOoXJM");
 
         private final String key;
         private final String defaultValue;
@@ -51,5 +53,13 @@ public class Config {
 
     public static String getDbPassword() {
         return getEnvByKey(ConfigKeys.DB_PASSWORD);
+    }
+
+    public static String getAccessTokenKey() {
+        return getEnvByKey(ConfigKeys.ACCESS_TOKEN_SECRET_KEY);
+    }
+
+    public static String getPasswordHashKey() {
+        return getEnvByKey(ConfigKeys.PASSWORD_HASH_KEY);
     }
 }

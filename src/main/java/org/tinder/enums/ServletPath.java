@@ -13,7 +13,7 @@ public enum ServletPath {
         this.path = path;
     }
 
-    public String getPath() {
+    public String path() {
         return this.path;
     }
 }
