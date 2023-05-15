@@ -6,6 +6,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.tinder.models.User;
 
 import java.util.Date;
 import java.util.UUID;
@@ -44,6 +45,11 @@ public class JWTToken {
         return this;
     }
 
+    public JWTToken addClaim(String key, Integer value) {
+        builder.withClaim(key, value);
+        return this;
+    }
+
     public String sign() {
         return builder.sign(algorithm);
     }
@@ -62,5 +68,15 @@ public class JWTToken {
     public static DecodedJWT verify(String token, String secret) throws JWTVerificationException {
         JWTToken jwt = JWTToken.of(secret);
         return jwt.verify(token);
+    }
+
+    public static JWTToken makeAccess(User user) {
+        JWTToken token = JWTToken.of(Config.getAccessTokenKey(), 3600000);
+        token
+                .addClaim("id", user.id())
+                .addClaim("login", user.login())
+                .addClaim("email", user.email())
+                .addClaim("password", user.password());
+        return token;
     }
 }

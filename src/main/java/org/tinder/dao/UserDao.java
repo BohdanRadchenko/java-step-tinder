@@ -16,14 +16,13 @@ public class UserDao extends DAO<User> {
 
     @Override
     public int create(User user) throws SQLException {
-        String sql = "INSERT INTO users (uuid, login, email, password) values (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (login, email, password) values (?, ?, ?)";
         return SqlRequest
                 .of(connection, sql)
                 .setString(
-                        user.getUuidString(),
-                        user.getLogin(),
-                        user.getEmail(),
-                        user.getPassword()
+                        user.login(),
+                        user.email(),
+                        user.password()
                 )
                 .update();
     }
@@ -40,14 +39,10 @@ public class UserDao extends DAO<User> {
 
     @Override
     public Optional<User> getById(String id) throws SQLException {
-        throw new RuntimeException("Not implement");
-    }
-
-    public Optional<User> getByUuId(String uuid) throws SQLException {
-        String sql = "SELECT id, uuid, login, email, password FROM users WHERE uuid = ?";
+        String sql = "SELECT id, login, email, password FROM users WHERE id = ?";
         ResultSet rs = SqlRequest
                 .of(connection, sql)
-                .setString(uuid)
+                .setString(id)
                 .query();
         if (!rs.next()) {
             return Optional.empty();
@@ -57,7 +52,7 @@ public class UserDao extends DAO<User> {
     }
 
     public Optional<User> getByEmail(String email) throws SQLException {
-        String sql = "SELECT id, uuid, login, email, password FROM users WHERE email = ?";
+        String sql = "SELECT id, login, email, password FROM users WHERE email = ?";
         ResultSet rs = SqlRequest
                 .of(connection, sql)
                 .setString(email)
@@ -70,7 +65,7 @@ public class UserDao extends DAO<User> {
     }
 
     public Optional<User> getByEmailOrLogin(String email, String login) throws SQLException {
-        String sql = "SELECT id, uuid, login, email, password FROM users WHERE email = ? OR login = ? ";
+        String sql = "SELECT id, login, email, password FROM users WHERE email = ? OR login = ? ";
         ResultSet rs = SqlRequest
                 .of(connection, sql)
                 .setString(email, login)

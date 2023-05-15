@@ -1,7 +1,5 @@
 package org.tinder.interfaces;
 
-import org.tinder.models.Model;
-
 import java.util.Optional;
 
 public interface IDAO<T extends Model> {
