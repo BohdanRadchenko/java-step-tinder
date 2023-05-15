@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class UserService {
-    private final UserDao db = new UserDao(Database.getConnection());
+    private final UserDao db = UserDao.of(Database.getConnection());
 
     public User getById(Integer id) throws DatabaseException {
         try {
