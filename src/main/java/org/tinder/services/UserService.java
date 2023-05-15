@@ -17,7 +17,7 @@ import java.util.Optional;
 public class UserService {
     private final UserDao db = new UserDao(Database.getConnection());
 
-    public User getById(String id) throws DatabaseException {
+    public User getById(Integer id) throws DatabaseException {
         try {
             Optional<User> user = db.getById(id);
             if (user.isEmpty()) {
@@ -30,17 +30,22 @@ public class UserService {
     }
 
     public User login(String token) throws NotFoundException, IllegalArgumentException {
-        DecodedJWT decode = JWTToken.verify(token, Config.getAccessTokenKey());
-        String id = decode.getClaim("id").asString();
-        String email = decode.getClaim("email").asString();
-        String password = decode.getClaim("password").asString();
-        User user = getById(id);
-        boolean equalsEmail = user.email().equals(email);
-        boolean equalsPassword = user.password().equals(password);
-        if(!equalsEmail || !equalsPassword) {
+        try {
+            DecodedJWT decode = JWTToken.verify(token, Config.getAccessTokenKey());
+            String stringId = decode.getClaim("id").asString();
+            int id = Integer.parseInt(stringId);
+            String email = decode.getClaim("email").asString();
+            String password = decode.getClaim("password").asString();
+            User user = getById(id);
+            boolean equalsEmail = user.email().equals(email);
+            boolean equalsPassword = user.password().equals(password);
+            if(!equalsEmail || !equalsPassword) {
+                throw new IllegalArgumentException("Invalid login data");
+            }
+            return user;
+        } catch (NumberFormatException ignored) {
             throw new IllegalArgumentException("Invalid login data");
         }
-        return user;
     }
 
     public User login(String email, String password) throws NotFoundException, IllegalArgumentException, DatabaseException {

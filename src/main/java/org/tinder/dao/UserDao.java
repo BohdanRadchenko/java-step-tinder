@@ -33,16 +33,16 @@ public class UserDao extends DAO<User> {
     }
 
     @Override
-    public boolean delete(String id) throws SQLException {
+    public boolean delete(Integer id) throws SQLException {
         throw new RuntimeException("Not implement");
     }
 
     @Override
-    public Optional<User> getById(String id) throws SQLException {
+    public Optional<User> getById(Integer id) throws SQLException {
         String sql = "SELECT id, login, email, password FROM users WHERE id = ?";
         ResultSet rs = SqlRequest
                 .of(connection, sql)
-                .setString(id)
+                .setInt(id)
                 .query();
         if (!rs.next()) {
             return Optional.empty();

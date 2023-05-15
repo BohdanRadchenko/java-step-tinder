@@ -6,7 +6,7 @@ public interface IDAO<T extends Model> {
 
     boolean save(T model) throws Exception;
 
-    boolean delete(String id) throws Exception;
+    boolean delete(Integer id) throws Exception;
 
-    Optional<T> getById(String id) throws Exception;
+    Optional<T> getById(Integer id) throws Exception;
 }
