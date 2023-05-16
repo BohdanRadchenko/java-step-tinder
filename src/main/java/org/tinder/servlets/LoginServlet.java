@@ -42,10 +42,9 @@ public class LoginServlet extends ServicesServlet {
         String password = req.getParameter(ServletParams.PASSWORD.param());
         try {
             User user = services.user.login(email, password);
-            JWTToken token = JWTToken.of(Config.getAccessTokenKey(), Constants.AUTH_EXPIRED_TIME);
-            token.addClaim("uuid", user.getUuidString());
-            token.addClaim("login", user.getLogin());
-            token.addClaim("email", user.getEmail());
+
+            JWTToken token = JWTToken.makeAccess(user);
+
             CookieWorker.auth(resp, token.sign());
             Responses.redirect(resp, ServletPath.HOME);
         } catch (NotFoundException ex) {

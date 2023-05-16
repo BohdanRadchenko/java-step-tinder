@@ -48,16 +48,11 @@ public class RegisterServlet extends ServicesServlet {
         try {
             User user = services.user.register(login, email, password);
 
-            JWTToken token = JWTToken.of(Config.getAccessTokenKey(), 3600000);
-            token
-                    .addClaim("uuid", user.getUuidString())
-                    .addClaim("login", user.getLogin())
-                    .addClaim("email", user.getEmail())
-                    .addClaim("password", user.getEmail());
+            JWTToken token = JWTToken.makeAccess(user);
 
             CookieWorker.auth(resp, token.sign());
 
-            System.out.printf("User created. ID: %s. LOGIN: %s", user.getUuidString(), user.getLogin());
+            System.out.printf("User created. ID: %s. LOGIN: %s", user.id(), user.login());
             Responses.redirect(resp, ServletPath.HOME);
         } catch (AlreadyExistException ex) {
             Responses.forbidden(resp, ex.getMessage());

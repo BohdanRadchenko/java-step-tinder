@@ -15,13 +15,13 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class UserService {
-    private final UserDao db = new UserDao(Database.getConnection());
+    private final UserDao db = UserDao.of(Database.getConnection());
 
-    public User getByUuId(String uuid) throws DatabaseException {
+    public User getById(Integer id) throws DatabaseException {
         try {
-            Optional<User> user = db.getByUuId(uuid);
+            Optional<User> user = db.getById(id);
             if (user.isEmpty()) {
-                throw new DatabaseException(String.format("User with uuid: %s not found", uuid));
+                throw new DatabaseException(String.format("User with id: %s not found", id));
             }
             return user.get();
         } catch (SQLException | DatabaseException ex) {
@@ -30,17 +30,22 @@ public class UserService {
     }
 
     public User login(String token) throws NotFoundException, IllegalArgumentException {
-        DecodedJWT decode = JWTToken.verify(token, Config.getAccessTokenKey());
-        String uuid = decode.getClaim("uuid").asString();
-        String email = decode.getClaim("email").asString();
-        String password = decode.getClaim("password").asString();
-        User user = getByUuId(uuid);
-        boolean equalsEmail = user.getEmail().equals(email);
-        boolean equalsPassword = user.getPassword().equals(password);
-        if(!equalsEmail || !equalsPassword) {
+        try {
+            DecodedJWT decode = JWTToken.verify(token, Config.getAccessTokenKey());
+            String stringId = decode.getClaim("id").asString();
+            int id = Integer.parseInt(stringId);
+            String email = decode.getClaim("email").asString();
+            String password = decode.getClaim("password").asString();
+            User user = getById(id);
+            boolean equalsEmail = user.email().equals(email);
+            boolean equalsPassword = user.password().equals(password);
+            if(!equalsEmail || !equalsPassword) {
+                throw new IllegalArgumentException("Invalid login data");
+            }
+            return user;
+        } catch (NumberFormatException ignored) {
             throw new IllegalArgumentException("Invalid login data");
         }
-        return user;
     }
 
     public User login(String email, String password) throws NotFoundException, IllegalArgumentException, DatabaseException {
@@ -51,7 +56,7 @@ public class UserService {
                 throw new NotFoundException("User not found!");
             }
             User user = userOptional.get();
-            if (!enc.check(password, user.getPassword())) {
+            if (!enc.check(password, user.password())) {
                 throw new IllegalArgumentException("Invalid password");
             }
             return user;
