@@ -21,7 +21,7 @@ public class StaticServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
 
-        if (pathInfo.startsWith("/")) pathInfo = pathInfo.substring(1);
+        //if (pathInfo.startsWith("/")) pathInfo = pathInfo.substring(1);
         Path file = Path.of(osStaticLocation, pathInfo);
 
         if (!file.toFile().exists()) {
