@@ -16,7 +16,6 @@ public class UserDao implements DAO<User> {
         this.connection = connection;
     }
 
-    @Override
     public int create(User user) throws SQLException {
         String sql = "INSERT INTO users (login, email, password) values (?, ?, ?)";
         return SqlRequest
@@ -29,7 +28,7 @@ public class UserDao implements DAO<User> {
                 .update();
     }
 
-    @Override
+
     public int update(User user) throws SQLException {
         throw new RuntimeException("Not implement");
     }
@@ -51,6 +50,15 @@ public class UserDao implements DAO<User> {
         } else {
             return Optional.of(User.load(rs));
         }
+    }
+
+    @Override
+    public boolean save(User model) throws Exception {
+        if (model.id() == null) {
+            return create(model) >= 1;
+        }
+        return update(model) >= 1;
+
     }
 
     public Optional<User> getByEmail(String email) throws SQLException {
