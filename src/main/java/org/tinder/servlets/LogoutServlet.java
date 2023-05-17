@@ -11,8 +11,7 @@ import java.io.IOException;
 
 public class LogoutServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        System.out.println("LOGOUT SERVLET");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         CookieWorker.logout(resp);
         Responses.redirect(resp, ServletPath.LOGIN);
     }

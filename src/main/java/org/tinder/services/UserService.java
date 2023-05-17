@@ -32,8 +32,7 @@ public class UserService {
     public User login(String token) throws NotFoundException, IllegalArgumentException {
         try {
             DecodedJWT decode = JWTToken.verify(token, Config.getAccessTokenKey());
-            String stringId = decode.getClaim("id").asString();
-            int id = Integer.parseInt(stringId);
+            int id = decode.getClaim("id").asInt();
             String email = decode.getClaim("email").asString();
             String password = decode.getClaim("password").asString();
             User user = getById(id);

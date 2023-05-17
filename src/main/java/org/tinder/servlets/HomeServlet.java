@@ -19,11 +19,11 @@ public class HomeServlet extends HttpServlet {
      try {
          String token = CookieWorker.getCookieOrThrow(req, CookieNames.AUTH_TOKEN);
          DecodedJWT verify = JWTToken.verify(token, Config.getAccessTokenKey());
-         String uuid = verify.getClaim("uuid").asString();
+         int id = verify.getClaim("id").asInt();
          String login = verify.getClaim("login").asString();
          String email = verify.getClaim("email").asString();
          try (PrintWriter w = resp.getWriter()) {
-             w.println(String.format("UUID: %s", uuid));
+             w.println(String.format("ID: %s", id));
              w.println(String.format("LOGIN: %s", login));
              w.println(String.format("EMAIL: %s", email));
              w.write("Home page");
