@@ -13,7 +13,7 @@ public record User(Integer id, String login, String email, String password) impl
     }
 
     public static User load(Integer id, String login, String email, String password) {
-        return new User(null, login, email, password);
+        return new User(id, login, email, password);
     }
 
     public static User load(ResultSet resultSet) {

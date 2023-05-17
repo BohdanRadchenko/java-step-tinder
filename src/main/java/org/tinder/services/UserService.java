@@ -43,8 +43,8 @@ public class UserService {
                 throw new IllegalArgumentException("Invalid login data");
             }
             return user;
-        } catch (NumberFormatException ignored) {
-            throw new IllegalArgumentException("Invalid login data");
+        } catch (NumberFormatException ex) {
+            throw new IllegalArgumentException("Invalid login data", ex);
         }
     }
 

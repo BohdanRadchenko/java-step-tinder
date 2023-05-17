@@ -5,12 +5,15 @@ import org.tinder.exceptions.DatabaseException;
 import org.tinder.filters.AuthRequestFilter;
 import org.tinder.services.Services;
 import org.tinder.servlets.*;
-import org.tinder.utils.Config;
-import org.tinder.utils.Database;
-import org.tinder.utils.ResourcesOps;
+import org.tinder.utils.*;
 
 public class TinderApp {
+    private static void init() {
+        OsUtil.osInit();
+    }
+
     public static void main(String[] args) {
+        init();
         try {
             Database db = Database.of();
             db
@@ -22,7 +25,7 @@ public class TinderApp {
             Services services = Services.create();
 
             // static content
-            server.addServlet(new StaticServlet(ResourcesOps.dir("static")), ServletPath.STATIC);
+            server.addServlet(new StaticServlet(ResourcesOps.dir(Constants.STATIC_CONTENT_DIR)), ServletPath.STATIC);
 
             // home
             server.addServlet(new HomeServlet(), ServletPath.HOME);
