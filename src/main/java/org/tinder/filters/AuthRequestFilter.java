@@ -24,7 +24,6 @@ public class AuthRequestFilter extends RequestFilter {
             services.user.login(token);
             return true;
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
             return false;
         }
     }
