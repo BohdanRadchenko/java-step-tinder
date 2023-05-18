@@ -28,7 +28,7 @@ public class TinderApp {
             server.addServlet(new StaticServlet(ResourcesOps.dir(Constants.STATIC_CONTENT_DIR)), ServletPath.STATIC);
 
             // home
-            server.addServlet(new HomeServlet(), ServletPath.HOME);
+            server.addServlet(new HomeServlet(services), ServletPath.HOME, new AuthRequestFilter(services));
 
             // Auth
             server.addServlet(new LogoutServlet(), ServletPath.LOGOUT, new AuthRequestFilter(services));

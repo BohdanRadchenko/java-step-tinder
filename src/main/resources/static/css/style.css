@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 html,
 body {
     width: 100%;
@@ -8,22 +12,86 @@ body {
     background-color: rgb(251,251,251);
 }
 
-header {
+.rst-btn {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    width: auto;
+}
+
+/*HEADER*/
+.header {
     width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
+    height: 60px;
     background-color: #fff;
     box-shadow: 0 4px 12px 0 rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.05);
-    padding: 4px 20px;
+    padding: 8px 28px;
     display: flex;
     justify-content: space-between;
 }
 
-nav {
+.header__nav {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.header__nav a {
+    margin-right: 20px;
+}
+
+.header__nav a:first-child {
+    margin-right: 30px;
+}
+
+.header__current {
     display: flex;
 }
 
+.header__current button {
+    height: 100%;
+}
+
+.header__current form:not(:last-child) {
+    margin-right: 20px;
+}
+
+.header__current-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header__current-profile button[type="submit"] {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.header__current-profile button[type="submit"] img {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+}
+
+
+/* MAIN */
+.main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 40px 20px;
+    width: 100%;
+}
+
+/* CONTAINER */
 .container {
     padding: 40px 20px;
     flex-grow: 1;
@@ -38,7 +106,18 @@ nav {
 
 .container.auth {
     background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+    height: auto;
 }
+
+
+
+/* from template folder */
 
 .form-signin,
 .form-signup {

@@ -40,7 +40,7 @@ public class UserDao implements DAO<User> {
 
     @Override
     public Optional<User> getById(Integer id) throws SQLException {
-        String sql = "SELECT id, login, email, password FROM users WHERE id = ?";
+        String sql = "SELECT id, login, email, password, avatar FROM users WHERE id = ?";
         ResultSet rs = SqlRequest
                 .of(connection, sql)
                 .setInt(id)
@@ -62,7 +62,7 @@ public class UserDao implements DAO<User> {
     }
 
     public Optional<User> getByEmail(String email) throws SQLException {
-        String sql = "SELECT id, login, email, password FROM users WHERE email = ?";
+        String sql = "SELECT id, login, email, password, avatar FROM users WHERE email = ?";
         ResultSet rs = SqlRequest
                 .of(connection, sql)
                 .setString(email)
