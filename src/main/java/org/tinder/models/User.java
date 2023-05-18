@@ -5,7 +5,6 @@ import org.tinder.interfaces.Model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
 
 public record User(Integer id, String login, String email, String password) implements Model {
     public static User create(String login, String email, String password) {
@@ -19,7 +18,7 @@ public record User(Integer id, String login, String email, String password) impl
     public static User load(ResultSet resultSet) {
         if (resultSet == null) return null;
         try {
-            int id = resultSet.getInt("id");
+            int id = resultSet.getInt("user_id");
             String login = resultSet.getString("login");
             String email = resultSet.getString("email");
             String password = resultSet.getString("password");

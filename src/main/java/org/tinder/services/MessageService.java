@@ -15,25 +15,44 @@ import java.util.List;
 public class MessageService {
     private final MessageDao messageDao;
 
-    public MessageService() throws SQLException {
+    public MessageService() {
 
         this.messageDao = new MessageDao(Database.getConnection());
     }
 
-    public List<Message> getMessagesByChatId(Integer chat_id) throws SQLException {
+
+    public boolean saveMessage(String content, User user, Integer chatID){
+        if (content == null) return false;
+        if (content.length() == 0) return false;
+        try {
+            return messageDao.save(new Message(
+                     null,
+                     new Chat(chatID),
+                     user,
+                     content));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public List<Message> getMessagesByChatId(Integer chat_id) {
         ArrayList<Message> messages = new ArrayList<>();
         HashMap<Integer, User> userHashMap = new HashMap<>();
 
-        ResultSet rs = messageDao.getMessagesByChatId(chat_id);
-        while (rs.next()){
-            User user = getUserFromCache(userHashMap, rs);
-            messages.add(new Message(
-                    rs.getInt("message_id"),
-                    new Chat(rs.getInt(chat_id)),
-                    user,
-                    rs.getString("content")
-            ));
+        try {
+            ResultSet rs = messageDao.getMessagesByChatId(chat_id);
+            while (rs.next()) {
+                User user = getUserFromCache(userHashMap, rs);
+                messages.add(new Message(
+                        rs.getInt("message_id"),
+                        new Chat(rs.getInt(chat_id)),
+                        user,
+                        rs.getString("content")
+                ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+
         return messages;
     }
 
