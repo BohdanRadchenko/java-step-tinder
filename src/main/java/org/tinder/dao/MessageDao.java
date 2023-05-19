@@ -2,16 +2,13 @@ package org.tinder.dao;
 
 
 import org.tinder.interfaces.DAO;
-import org.tinder.models.Chat;
 import org.tinder.models.Message;
-import org.tinder.models.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.UUID;
 
 public class MessageDao implements DAO<Message> {
 
@@ -25,7 +22,10 @@ public class MessageDao implements DAO<Message> {
         PreparedStatement preparedStatement =
                                 conn.prepareStatement(
                                         String.format(getTextQueryMessages(),
-                                                "WHERE mess.chat_id = (?)"));
+                                                """
+                                                    WHERE mess.chat_id = (?)
+                                                ORDER BY mess.message_id
+                                                """));
 
         preparedStatement.setInt(1,chatId);
         return preparedStatement.executeQuery();
@@ -74,7 +74,15 @@ public class MessageDao implements DAO<Message> {
 
     @Override
     public boolean save(Message message) throws Exception {
-        throw new RuntimeException("Not implement");
+        PreparedStatement preparedStatement = conn.prepareStatement("""
+                INSERT INTO
+                    messages (chat_id, user_id, content)
+                    values (?,?,?)
+                """);
+        preparedStatement.setInt(1, message.chat().id());
+        preparedStatement.setInt(2, message.user().id());
+        preparedStatement.setString(3, message.content());
+        return preparedStatement.execute();
     }
 
 

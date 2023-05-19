@@ -13,7 +13,7 @@ public class Chat implements Model {
         this.name = name;
     }
 
-    //цей конструктор тимчасовий
+    //TODO: template constructor
     public Chat(Integer id) {
         this.id = id;
 

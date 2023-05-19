@@ -1,7 +1,7 @@
 package org.tinder.utils;
 
 public class SqlString {
-    public static final String USER_FIELDS_FULL = "id, login, email, password, first_name, last_name, profession, avatar";
+    public static final String USER_FIELDS_FULL = "id as user_id, login, email, password, first_name, last_name, profession, avatar";
 
     public static String userSelectFullById() {
         return String.format("SELECT %s FROM users WHERE id = ?", USER_FIELDS_FULL);

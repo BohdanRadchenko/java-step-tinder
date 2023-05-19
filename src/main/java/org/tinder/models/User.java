@@ -23,7 +23,7 @@ public record User(Integer id, String login, String email, String password, Stri
             if (resultSet == null) {
                 throw new RuntimeException("Result set is missing");
             }
-            int id = resultSet.getInt("id");
+            int id = resultSet.getInt("user_id");
             String login = resultSet.getString("login");
             String email = resultSet.getString("email");
             String password = resultSet.getString("password");

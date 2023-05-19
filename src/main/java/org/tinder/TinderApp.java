@@ -4,6 +4,7 @@ import org.tinder.enums.ServletPath;
 import org.tinder.exceptions.DatabaseException;
 import org.tinder.filters.AuthRequestFilter;
 import org.tinder.filters.ProfileFilter;
+import org.tinder.filters.StaticResourcesFilter;
 import org.tinder.services.Services;
 import org.tinder.servlets.*;
 import org.tinder.utils.*;
@@ -38,6 +39,7 @@ public class TinderApp {
             server.addServlet(new LoginServlet(services), ServletPath.LOGIN);
             server.addServlet(new RegisterServlet(services), ServletPath.REGISTER);
 
+            server.addServlet(new MessageServlet(services), ServletPath.MESSAGES, new AuthRequestFilter(services), new StaticResourcesFilter(services));
             // profile
             server
                     .addServlet(new ProfileServlet(services), ServletPath.PROFILE, new AuthRequestFilter(services), new ProfileFilter())
