@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 html,
 body {
     width: 100%;
@@ -8,22 +12,99 @@ body {
     background-color: rgb(251,251,251);
 }
 
-header {
+.rst-btn {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    width: auto;
+}
+
+/*HEADER*/
+.header {
     width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
+    height: 60px;
     background-color: #fff;
     box-shadow: 0 4px 12px 0 rgba(0,0,0,0.07),0 2px 4px rgba(0,0,0,0.05);
-    padding: 4px 20px;
+    padding: 8px 28px;
     display: flex;
     justify-content: space-between;
 }
 
-nav {
+.header__nav {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.header__nav a {
+    margin-right: 20px;
+}
+
+.header__nav a:first-child {
+    margin-right: 30px;
+}
+
+.header__current {
     display: flex;
 }
 
+.header__current button {
+    height: 100%;
+}
+
+.header__current form:not(:last-child) {
+    margin-right: 20px;
+}
+
+.header__current-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header__current-profile button[type="submit"] {
+    width: auto;
+}
+
+.header__current-profile button[type="submit"]:focus {
+    outline: none;
+}
+
+.header__current-profile button[type="submit"]:hover span,
+.header__current-profile button[type="submit"]:focus span {
+    outline: 5px auto -webkit-focus-ring-color;
+}
+
+.header__current-profile button[type="submit"] span {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.header__current-profile button[type="submit"] img {
+    width: inherit;
+    height: inherit;
+    object-fit: cover;
+}
+
+
+/* MAIN */
+.main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 10px 20px;
+    width: 100%;
+}
+
+/* CONTAINER */
 .container {
     padding: 40px 20px;
     flex-grow: 1;
@@ -38,8 +119,16 @@ nav {
 
 .container.auth {
     background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+    height: auto;
 }
 
+/* from template folder */
 .form-signin,
 .form-signup {
     width: 100%;
@@ -140,6 +229,21 @@ i {
     align-items: center;
 }
 
+.avatar-img.profile {
+    overflow: hidden;
+    width: 140px;
+    height: 140px;
+    border: 1px solid #4e555b;
+    border-radius: 50%;
+    justify-content: center;
+}
+
+.avatar-img.profile img {
+    object-fit: cover;
+    width: inherit;
+    height: inherit;
+}
+
 .img-circle {
     border-radius: 50%;
     width: 70px;
@@ -176,21 +280,14 @@ i {
 }
 
 
-::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #F5F5F5;
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb {
+    display: none;
 }
 
 ::-webkit-scrollbar {
-    width: 12px;
-    background-color: #F5F5F5;
+    width: 0;
 }
-
-::-webkit-scrollbar-thumb {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-    background-color: #555;
-}
-
 
 .mytext {
     border: 0;
@@ -388,7 +485,6 @@ input:focus {
 }
 
 .chats {
-
     overflow-x: scroll;
     overflow-x: hidden;
     background: #ECEFF1;

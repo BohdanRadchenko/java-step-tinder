@@ -6,11 +6,12 @@
 <#--CURRENT_USER -> user from login token id-->
 
 <@t.page>
-    <@t.head title="Test page with header"/>
+    <@t.head title="Sign Up">
+        <@links.fac />
+        <@script.profile />
+    </@t.head>
     <@t.body_auth>
-        <div>
-            YOUR CODE HERE
-        </div>
+        <#include "componnets/forms/profile_form.ftl">
     </@t.body_auth>
 </@t.page>
 
