@@ -6,11 +6,11 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.tinder.enums.ServletPath;
 import org.tinder.filters.RequestFilter;
-import org.tinder.interfaces.HttpFilter;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServlet;
+import java.util.Date;
 import java.util.EnumSet;
 
 public class HTTPServer {
@@ -31,29 +31,30 @@ public class HTTPServer {
         addFilter(filter, servletPath, dt);
     }
 
-    public void addServlet(HttpServlet servlet, ServletPath servletPath, HttpFilter... filters) {
-        for (HttpFilter filter : filters) {
-            addFilter(filter, servletPath);
-        }
-        handler.addServlet(new ServletHolder(servlet), servletPath.path());
+    public ServletHolder addServlet(HttpServlet servlet, ServletPath servletPath) {
+        ServletHolder sh = new ServletHolder(servlet);
+        handler.addServlet(sh, servletPath.path());
+        return sh;
     }
-
-    public void addServlet(HttpServlet servlet, ServletPath servletPath, RequestFilter... filters) {
+    public ServletHolder addServlet(HttpServlet servlet, ServletPath servletPath, RequestFilter... filters) {
         for (RequestFilter filter : filters) {
             addFilter(filter.of(), servletPath);
         }
-        handler.addServlet(new ServletHolder(servlet), servletPath.path());
+        return addServlet(servlet, servletPath);
     }
 
-    public void addServlet(HttpServlet servlet, ServletPath servletPath) {
-        handler.addServlet(new ServletHolder(servlet), servletPath.path());
+    private void run() throws Exception {
+        server.start();
+
+        System.out.printf("Server started on port: %d, host: %s%n", server.getURI().getPort(), server.getURI().getHost());
+        System.out.println(new Date(System.currentTimeMillis()));
+
+        server.join();
     }
 
     public void start() throws Exception {
         server.setHandler(handler);
 
-        server.start();
-        server.join();
-        System.out.println("Server started...");
+        run();
     }
 }

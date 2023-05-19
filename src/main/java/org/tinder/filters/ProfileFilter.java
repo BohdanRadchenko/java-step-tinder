@@ -1,29 +1,28 @@
 package org.tinder.filters;
 
-import org.tinder.enums.CookieNames;
 import org.tinder.enums.ServletPath;
-import org.tinder.models.User;
-import org.tinder.services.Services;
-import org.tinder.utils.CookieWorker;
 import org.tinder.utils.Responses;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class AuthRequestFilter extends RequestFilter {
-
-    public AuthRequestFilter(Services services) {
-        super(services);
-    }
+public class ProfileFilter extends RequestFilter {
 
     @Override
     boolean accept(HttpServletRequest req, HttpServletResponse res) {
+        if(req.getMethod().equals("GET")) return true;
         try {
-            String token = CookieWorker.getCookieOrThrow(req, CookieNames.AUTH_TOKEN);
-            User u = services.user.login(token);
-            req.setAttribute("userId", u.id());
-            req.setAttribute("currentUser", u);
+            String firstName = req.getParameter("first_name");
+            String lastName = req.getParameter("last_name");
+            String profession = req.getParameter("profession");
+
+            if (
+                    firstName == null || firstName.isBlank()
+                    && lastName == null || lastName.isBlank()
+                    && profession == null || profession.isBlank()
+            ) return false;
+
             return true;
         } catch (Exception ex) {
             return false;
@@ -33,8 +32,7 @@ public class AuthRequestFilter extends RequestFilter {
     @Override
     void failed(HttpServletRequest req, HttpServletResponse res) {
         try {
-            CookieWorker.logout(res);
-            Responses.redirect(res, ServletPath.LOGIN);
+            Responses.redirect(res, ServletPath.HOME);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

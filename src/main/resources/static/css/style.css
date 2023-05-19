@@ -64,6 +64,19 @@ body {
 }
 
 .header__current-profile button[type="submit"] {
+    width: auto;
+}
+
+.header__current-profile button[type="submit"]:focus {
+    outline: none;
+}
+
+.header__current-profile button[type="submit"]:hover span,
+.header__current-profile button[type="submit"]:focus span {
+    outline: 5px auto -webkit-focus-ring-color;
+}
+
+.header__current-profile button[type="submit"] span {
     width: 44px;
     height: 44px;
     border-radius: 50%;
@@ -76,8 +89,8 @@ body {
 }
 
 .header__current-profile button[type="submit"] img {
-    width: 44px;
-    height: 44px;
+    width: inherit;
+    height: inherit;
     object-fit: cover;
 }
 
@@ -87,7 +100,7 @@ body {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    padding: 40px 20px;
+    padding: 10px 20px;
     width: 100%;
 }
 
@@ -115,10 +128,7 @@ body {
     height: auto;
 }
 
-
-
 /* from template folder */
-
 .form-signin,
 .form-signup {
     width: 100%;
@@ -219,6 +229,21 @@ i {
     align-items: center;
 }
 
+.avatar-img.profile {
+    overflow: hidden;
+    width: 140px;
+    height: 140px;
+    border: 1px solid #4e555b;
+    border-radius: 50%;
+    justify-content: center;
+}
+
+.avatar-img.profile img {
+    object-fit: cover;
+    width: inherit;
+    height: inherit;
+}
+
 .img-circle {
     border-radius: 50%;
     width: 70px;
@@ -255,21 +280,14 @@ i {
 }
 
 
-::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #F5F5F5;
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb {
+    display: none;
 }
 
 ::-webkit-scrollbar {
-    width: 12px;
-    background-color: #F5F5F5;
+    width: 0;
 }
-
-::-webkit-scrollbar-thumb {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-    background-color: #555;
-}
-
 
 .mytext {
     border: 0;
@@ -467,7 +485,6 @@ input:focus {
 }
 
 .chats {
-
     overflow-x: scroll;
     overflow-x: hidden;
     background: #ECEFF1;

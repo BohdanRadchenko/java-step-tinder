@@ -5,7 +5,8 @@ public enum ServletPath {
     HOME("/"),
     LOGIN("/login"),
     REGISTER("/register"),
-    LOGOUT("/logout");
+    LOGOUT("/logout"),
+    PROFILE("/profile");
 
     private final String path;
 

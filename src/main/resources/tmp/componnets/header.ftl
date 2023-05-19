@@ -1,6 +1,6 @@
 <header class="header">
     <nav class="header__nav">
-        <a class="d-none d-md-inline-block" href="/">
+        <a class="d-inline-block" href="/">
             <img src="static/img/logo_tinder.png" height="46" alt="logo">
         </a>
         <a class="d-none d-md-inline-block" href="/users">users</a>
@@ -17,7 +17,17 @@
         <#if CURRENT_USER??>
             <form action="/profile" class="header__current-profile">
                 <button type="submit" class="rst-btn">
-                    <img src="${CURRENT_USER.avatar()}" alt="avatar" width="44">
+                    <span>
+                        <img
+                                <#if CURRENT_USER.avatar()?? && CURRENT_USER.avatar()?has_content>
+                                    src="${CURRENT_USER.avatar()}"
+                                <#else >
+                                    src="static/img/avatar.jpg"
+                                </#if>
+                                alt="avatar"
+                                width="44"
+                        >
+                    </span>
                 </button>
             </form>
         </#if>

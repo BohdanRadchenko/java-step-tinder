@@ -3,6 +3,7 @@ package org.tinder.dao;
 import org.tinder.interfaces.DAO;
 import org.tinder.models.User;
 import org.tinder.utils.SqlRequest;
+import org.tinder.utils.SqlString;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,9 +18,8 @@ public class UserDao implements DAO<User> {
     }
 
     public int create(User user) throws SQLException {
-        String sql = "INSERT INTO users (login, email, password) values (?, ?, ?)";
         return SqlRequest
-                .of(connection, sql)
+                .of(connection, SqlString.userInsertCreate())
                 .setString(
                         user.login(),
                         user.email(),
@@ -28,9 +28,33 @@ public class UserDao implements DAO<User> {
                 .update();
     }
 
-
     public int update(User user) throws SQLException {
-        throw new RuntimeException("Not implement");
+        return SqlRequest
+                .of(connection, SqlString.userUpdateFull())
+                .setString(
+                        user.login(),
+                        user.email(),
+                        user.password(),
+                        user.firstName(),
+                        user.lastName(),
+                        user.profession(),
+                        user.avatar()
+                )
+                .setInt(user.id())
+                .update();
+    }
+
+    public int updateProfile(User user) throws SQLException {
+        return SqlRequest
+                .of(connection, SqlString.userUpdateProfile())
+                .setString(
+                        user.firstName(),
+                        user.lastName(),
+                        user.profession(),
+                        user.avatar()
+                )
+                .setInt(user.id())
+                .update();
     }
 
     @Override
@@ -40,9 +64,8 @@ public class UserDao implements DAO<User> {
 
     @Override
     public Optional<User> getById(Integer id) throws SQLException {
-        String sql = "SELECT id, login, email, password, avatar FROM users WHERE id = ?";
         ResultSet rs = SqlRequest
-                .of(connection, sql)
+                .of(connection, SqlString.userSelectFullById())
                 .setInt(id)
                 .query();
         if (!rs.next()) {
@@ -62,9 +85,8 @@ public class UserDao implements DAO<User> {
     }
 
     public Optional<User> getByEmail(String email) throws SQLException {
-        String sql = "SELECT id, login, email, password, avatar FROM users WHERE email = ?";
         ResultSet rs = SqlRequest
-                .of(connection, sql)
+                .of(connection, SqlString.userSelectFullByEmail())
                 .setString(email)
                 .query();
         if (!rs.next()) {
@@ -75,9 +97,8 @@ public class UserDao implements DAO<User> {
     }
 
     public Optional<User> getByEmailOrLogin(String email, String login) throws SQLException {
-        String sql = "SELECT id, login, email, password FROM users WHERE email = ? OR login = ? ";
         ResultSet rs = SqlRequest
-                .of(connection, sql)
+                .of(connection, SqlString.userSelectFullByLoginOrEmail())
                 .setString(email, login)
                 .query();
         if (!rs.next()) {

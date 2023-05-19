@@ -77,6 +77,9 @@ public class JWTToken {
                 .addClaim("login", user.login())
                 .addClaim("email", user.email())
                 .addClaim("password", user.password())
+                .addClaim("firstName", user.firstName())
+                .addClaim("lastName", user.lastName())
+                .addClaim("profession", user.profession())
                 .addClaim("avatar", user.avatar());
         return token;
     }

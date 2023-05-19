@@ -29,6 +29,17 @@ public class UserService {
         }
     }
 
+    public User updateProfile (User user) throws DatabaseException {
+        try {
+            if(db.updateProfile(user) < 1) {
+                throw new DatabaseException("The user has not been updated!");
+            }
+            return user;
+        } catch (SQLException | DatabaseException ex) {
+            throw new DatabaseException(ex);
+        }
+    }
+
     public User login(String token) throws NotFoundException, IllegalArgumentException {
         try {
             DecodedJWT decode = JWTToken.verify(token, Config.getAccessTokenKey());
