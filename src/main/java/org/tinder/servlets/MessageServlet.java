@@ -5,6 +5,7 @@ import org.tinder.enums.CookieNames;
 import org.tinder.models.Message;
 import org.tinder.models.User;
 import org.tinder.services.MessageService;
+import org.tinder.services.Services;
 import org.tinder.services.UserService;
 import org.tinder.utils.CookieWorker;
 import org.tinder.utils.FMTemplate;
@@ -19,13 +20,10 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 
-public class MessageServlet extends HttpServlet{
+public class MessageServlet extends ServicesServlet{
 
-    private final MessageService messageService;
-
-    public MessageServlet(){
-
-            messageService = new MessageService();
+    public MessageServlet(Services services) {
+        super(services);
 
     }
 
@@ -35,11 +33,11 @@ public class MessageServlet extends HttpServlet{
 
         Integer id = getMessageId(req);
         String token = CookieWorker.getCookieOrThrow(req, CookieNames.AUTH_TOKEN);
-        User user = new UserService().login(token);
+        User user = services.user.login(token);
 
         HashMap<String, Object> dataModel = new HashMap<>();
 
-        List<Message> messages = messageService.getMessagesByChatId(id);
+        List<Message> messages = services.messageService.getMessagesByChatId(id);
         dataModel.put("messages", messages);
         dataModel.put("chat_name", id);
         dataModel.put("currentUser", user.id());
@@ -58,9 +56,9 @@ public class MessageServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer id = getMessageId(req);
         String token = CookieWorker.getCookieOrThrow(req, CookieNames.AUTH_TOKEN);
-        User user = new UserService().login(token);
+        User user = services.user.login(token);
         String message = req.getParameter("message");
-        messageService.saveMessage(message, user,id);
+        services.messageService.saveMessage(message, user,id);
         resp.sendRedirect(String.format("/messages/%s", id));
     }
 

@@ -8,23 +8,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class MessagesStaticResourcesFilter extends RequestFilter{
+public class StaticResourcesFilter extends RequestFilter{
 
-    public MessagesStaticResourcesFilter(Services services) {
+    public StaticResourcesFilter(Services services) {
         super(services);
     }
     @Override
     boolean accept(HttpServletRequest req, HttpServletResponse res) {
 
-        String path = req.getRequestURI().substring(req.getContextPath().length());
-        return !path.startsWith("/messages/static/");
+        return !(req.getPathInfo().startsWith("/static") && !req.getRequestURI().startsWith("/static/"));
     }
 
     @Override
     void failed(HttpServletRequest req, HttpServletResponse res) {
         String newPath = req.getRequestURI()
-                .substring(req.getContextPath().length())
-                .replace("/messages/static/", "/static/");
+                .substring(req.getRequestURI().length()- req.getPathInfo().length());
+
         RequestDispatcher dispatcher = req.getRequestDispatcher(newPath);
         try {
             dispatcher.forward(req, res);
