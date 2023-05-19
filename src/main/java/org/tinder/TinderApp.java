@@ -3,10 +3,13 @@ package org.tinder;
 import org.tinder.enums.ServletPath;
 import org.tinder.exceptions.DatabaseException;
 import org.tinder.filters.AuthRequestFilter;
+import org.tinder.filters.ProfileFilter;
 import org.tinder.filters.StaticResourcesFilter;
 import org.tinder.services.Services;
 import org.tinder.servlets.*;
 import org.tinder.utils.*;
+
+import javax.servlet.MultipartConfigElement;
 
 public class TinderApp {
     private static void init() {
@@ -29,7 +32,7 @@ public class TinderApp {
             server.addServlet(new StaticServlet(ResourcesOps.dir(Constants.STATIC_CONTENT_DIR)), ServletPath.STATIC);
 
             // home
-            server.addServlet(new HomeServlet(), ServletPath.HOME);
+            server.addServlet(new HomeServlet(services), ServletPath.HOME, new AuthRequestFilter(services));
 
             // Auth
             server.addServlet(new LogoutServlet(), ServletPath.LOGOUT, new AuthRequestFilter(services));
@@ -37,6 +40,16 @@ public class TinderApp {
             server.addServlet(new RegisterServlet(services), ServletPath.REGISTER);
 
             server.addServlet(new MessageServlet(services), ServletPath.MESSAGES, new AuthRequestFilter(services), new StaticResourcesFilter(services));
+            // profile
+            server
+                    .addServlet(new ProfileServlet(services), ServletPath.PROFILE, new AuthRequestFilter(services), new ProfileFilter())
+                    .getRegistration()
+                    .setMultipartConfig(new MultipartConfigElement(
+                            Constants.MULTIPART_CONFIG_LOCATION,
+                            Constants.MAX_FILE_UPLOAD_SIZE,
+                            Constants.MAX_REQUEST_SIZE,
+                            Constants.FILE_SIZE_THRESHOLD
+                    ));
 
 
             server.start();

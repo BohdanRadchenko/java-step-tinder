@@ -6,7 +6,9 @@ public enum ServletParams {
     PASSWORD("password"),
     PASSWORD_CONFIRM("password_confirm"),
     REGISTER_LINK(ServletPath.REGISTER.path()),
-    LOGIN_LINK(ServletPath.LOGIN.path());
+    LOGIN_LINK(ServletPath.LOGIN.path()),
+    LOGOUT_LINK(ServletPath.LOGOUT.path()),
+    CURRENT_USER("CURRENT_USER");
     private final String param;
 
     ServletParams(String param) {

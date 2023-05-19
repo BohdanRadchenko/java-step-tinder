@@ -19,3 +19,7 @@
     <@toastify/>
     <script src="static/js/register.js" defer></script>
 </#macro>
+
+<#macro profile>
+    <script src="static/js/profile.js" defer></script>
+</#macro>
