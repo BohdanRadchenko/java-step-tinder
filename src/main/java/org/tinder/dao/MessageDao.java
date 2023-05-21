@@ -53,14 +53,20 @@ public class MessageDao implements DAO<Message> {
     }
 
     private String getTextQueryMessages(){
+
         return """
                  SELECT mess.message_id,
                        mess.chat_id,
                        mess.user_id,
                        mess.content,
+                       mess.created_at,
                        u.login,
                        u.password,
                        u.email,
+                       u.first_name,
+                       u.last_name,
+                       u.profession,
+                       u.avatar,
                        ci.user_id as chat_user_id,
                        ci.name
                 FROM messages mess

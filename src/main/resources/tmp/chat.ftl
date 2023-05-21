@@ -7,7 +7,8 @@
         <@links.fac/>
     </@t.head>
 
-    <body>
+    <@t.body_auth>
+        <#include "componnets/forms/profile_form.ftl">
     <div class="container">
         <div class="row">
             <div class="chat-main col-6 offset-3">
@@ -55,7 +56,7 @@
                                                 <p class="bg-white m-0 pt-1 pb-1 pl-2 pr-2 rounded">
                                                     ${item.content()}
                                                 </p>
-                                                <span class="receive-msg-time">${item.user().login()}, Jan 25, 6:20 PM</span>
+                                                <span class="receive-msg-time">${item.user().login()}, ${item.getCreatedMessage()}</span>
                                             </div>
                                         </li>
                                     </#if>
@@ -86,5 +87,5 @@
         </div>
     </div>
 
-    </body>
+    </@t.body_auth>
 </@t.page>

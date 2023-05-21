@@ -42,6 +42,7 @@ public class LoginServlet extends ServicesServlet {
         String password = req.getParameter(ServletParams.PASSWORD.param());
         try {
             User user = services.user.login(email, password);
+            services.user.insertUserLoginHistory(user);
 
             JWTToken token = JWTToken.makeAccess(user);
 

@@ -6,12 +6,17 @@ import org.tinder.exceptions.AlreadyExistException;
 import org.tinder.exceptions.DatabaseException;
 import org.tinder.exceptions.NotFoundException;
 import org.tinder.models.User;
+import org.tinder.models.UserLiked;
 import org.tinder.utils.Config;
 import org.tinder.utils.Database;
 import org.tinder.utils.Encryptor;
 import org.tinder.utils.JWTToken;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class UserService {
@@ -92,5 +97,29 @@ public class UserService {
         } catch (SQLException ex) {
             throw new DatabaseException(ex);
         }
+    }
+
+    public void insertUserLoginHistory(User user){
+        try {
+            db.insertUserLoginHistory(user);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<UserLiked> getListUsersLiked(int numberPage){
+        ArrayList<UserLiked> userLogins = new ArrayList<>();
+        try {
+            ResultSet rs = db.getUsersLiked(numberPage);
+            while (rs.next()){
+
+                LocalDateTime lastLogin = rs.getTimestamp("lastLogin_time").toLocalDateTime();
+
+                userLogins.add(new UserLiked(User.load(rs),lastLogin));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return userLogins;
     }
 }
