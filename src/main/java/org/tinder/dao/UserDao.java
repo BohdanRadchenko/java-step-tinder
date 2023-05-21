@@ -120,7 +120,7 @@ public class UserDao implements DAO<User> {
 
     public ResultSet getUsersLiked(int numberPage) throws SQLException {
         //TODO: змінити запит, щоб в нього потрапляли тільки юзери які були лайкнуті
-        return connection.prepareStatement(String.format("""
+        return connection.prepareStatement("""
                         SELECT
                             u.id as user_id,
                             u.login,
@@ -144,9 +144,7 @@ public class UserDao implements DAO<User> {
                             u.last_name,
                             u.profession,
                             u.avatar
-                        ORDER BY u.id
-                        %s
-                        """,
-                new Page(numberPage).toSQL())).executeQuery();
+                        ORDER BY u.id                       
+                        """).executeQuery();
     }
 }
