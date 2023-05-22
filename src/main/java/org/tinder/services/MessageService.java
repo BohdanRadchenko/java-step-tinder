@@ -8,6 +8,7 @@ import org.tinder.utils.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +30,8 @@ public class MessageService {
                      null,
                      new Chat(chatID),
                      user,
-                     content));
+                     content,
+                     LocalDateTime.now()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -46,7 +48,8 @@ public class MessageService {
                         rs.getInt("message_id"),
                         new Chat(rs.getInt(chat_id)),
                         user,
-                        rs.getString("content")
+                        rs.getString("content"),
+                        rs.getTimestamp("created_at").toLocalDateTime()
                 ));
             }
         } catch (SQLException e) {

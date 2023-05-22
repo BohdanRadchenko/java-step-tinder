@@ -129,26 +129,27 @@ public class LikeDao implements DAO<Like> {
         ps.execute();
     }
 
-    public LinkedList<Integer> getAllUsersForLikes(Integer currentUserId) throws SQLException {
+    public Integer getAnyUserForLikes(Integer currentUserId) throws SQLException {
         PreparedStatement ps = conn.prepareStatement(
                 """
                     SELECT u.id
                     FROM users u
                     LEFT JOIN likes l ON u.id = l.user_to AND l.user_from = ?
                     WHERE l.user_from IS NULL AND u.id != ?
+                    LIMIT 1
                     """
         );
         ps.setInt(1, currentUserId);
         ps.setInt(2, currentUserId);
         ResultSet rs = ps.executeQuery();
-        LinkedList<Integer> idList = new LinkedList<>();
 
-        while (rs.next()) {
-            int id = rs.getInt("id");
-            idList.add(id);
+        if (rs.next()) {
+            return rs.getInt("id");
         }
-        return idList;
+
+        return null;
     }
+
 
     public LinkedList<Integer> getAllLikedUsers(Integer currentUserId) throws SQLException {
         PreparedStatement ps = conn.prepareStatement(
