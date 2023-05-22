@@ -4,6 +4,7 @@ import org.tinder.interfaces.DAO;
 import org.tinder.models.Like;
 
 import java.sql.*;
+import java.util.LinkedList;
 import java.util.Optional;
 
 public class LikeDao implements DAO<Like> {
@@ -127,4 +128,48 @@ public class LikeDao implements DAO<Like> {
         ps.setInt(2, id);
         ps.execute();
     }
+
+    public LinkedList<Integer> getAllUsersForLikes(Integer currentUserId) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement(
+                """
+                    SELECT u.id
+                    FROM users u
+                    LEFT JOIN likes l ON u.id = l.user_to AND l.user_from = ?
+                    WHERE l.user_from IS NULL AND u.id != ?
+                    """
+        );
+        ps.setInt(1, currentUserId);
+        ps.setInt(2, currentUserId);
+        ResultSet rs = ps.executeQuery();
+        LinkedList<Integer> idList = new LinkedList<>();
+
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            idList.add(id);
+        }
+        return idList;
+    }
+
+    public LinkedList<Integer> getAllLikedUsers(Integer currentUserId) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement(
+                """
+                    SELECT user_to
+                    FROM likes
+                    WHERE user_from = ? AND is_liked = ?
+                    """
+        );
+        ps.setInt(1, currentUserId);
+        ps.setBoolean(2, true);
+        ResultSet rs = ps.executeQuery();
+        LinkedList<Integer> idList = new LinkedList<>();
+
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            idList.add(id);
+        }
+        return idList;
+    }
+
+
+
 }
