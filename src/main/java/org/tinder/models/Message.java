@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public record Message(Integer id, Chat chat, User user, String content) implements Model {
-
     public static Message load(ResultSet rs){
         if (rs == null) return null;
         try {
