@@ -1,21 +1,15 @@
 package org.tinder.servlets;
 
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
+import freemarker.template.*;
 import org.tinder.enums.CookieNames;
 import org.tinder.models.User;
 import org.tinder.services.Services;
-import org.tinder.utils.CookieWorker;
-import org.tinder.utils.FMTemplate;
+import org.tinder.utils.*;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import javax.servlet.http.*;
+import java.io.*;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 public class LikedServlet extends ServicesServlet {
     public LikedServlet(Services services) {
@@ -23,7 +17,12 @@ public class LikedServlet extends ServicesServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        doPost(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HashMap<String, Object> data = new HashMap<>();
         String token = CookieWorker.getCookieOrThrow(req, CookieNames.AUTH_TOKEN);
         User currentUser = services.user.login(token);

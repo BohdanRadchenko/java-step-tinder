@@ -15,7 +15,7 @@ public class LikeDao implements DAO<Like> {
     }
 
     @Override
-    public boolean delete(Integer id) throws Exception {
+    public boolean delete(Integer id) {
         throw new RuntimeException("Impossible by design");
     }
 
@@ -165,7 +165,7 @@ public class LikeDao implements DAO<Like> {
         LinkedList<Integer> idList = new LinkedList<>();
 
         while (rs.next()) {
-            int id = rs.getInt("id");
+            int id = rs.getInt("user_to");
             idList.add(id);
         }
         return idList;
