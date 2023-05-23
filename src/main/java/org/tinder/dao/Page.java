@@ -1,6 +1,6 @@
 package org.tinder.dao;
 
-record Page(int number) {
+public record Page(int number) {
     private static final int defaultPageSize = 20;
     public String toSQL(){
         return String.format("""

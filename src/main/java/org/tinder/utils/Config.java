@@ -5,6 +5,8 @@ import java.util.Optional;
 public class Config {
     enum ConfigKeys {
         PORT("PORT", "8080"),
+        JDBC_DB_URL("JDBC_DATABASE_URL", "jdbc:postgresql://tinder-dev.ckej7ilphtof.eu-central-1.rds.amazonaws.com:5432/dev?user=postgres&password=12345678"),
+        DATABASE_URL("DATABASE_URL", "postgres://postgres:12345678@tinder-dev.ckej7ilphtof.eu-central-1.rds.amazonaws.com:5432/dev"),
         DB_URI("DB_HOST", "jdbc:postgresql://tinder-dev.ckej7ilphtof.eu-central-1.rds.amazonaws.com:5432"),
         DB_NAME("DB_NAME", "dev"),
         DB_USER("DB_USER", "postgres"),
@@ -39,6 +41,14 @@ public class Config {
         } catch (NumberFormatException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public static String getJdbcDatabaseUrl() {
+        return getEnvByKey(ConfigKeys.JDBC_DB_URL);
+    }
+
+    public static String getDatabaseUrl() {
+        return getEnvByKey(ConfigKeys.DATABASE_URL);
     }
 
     public static String getDbConnectionUri() {
