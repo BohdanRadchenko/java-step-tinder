@@ -3,9 +3,11 @@ package org.tinder.servlets;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.tinder.enums.CookieNames;
+import org.tinder.enums.ServletPath;
 import org.tinder.models.Like;
 import org.tinder.models.User;
 import org.tinder.services.Services;
+import org.tinder.utils.Constants;
 import org.tinder.utils.CookieWorker;
 import org.tinder.utils.FMTemplate;
 
@@ -51,7 +53,7 @@ public class UsersServlet extends ServicesServlet {
             data.put("userTo", oneForLike.id());
             data.put("avatar", oneForLike.avatar());
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            resp.sendRedirect(String.valueOf(ServletPath.LIKED));
         }
 
         try (PrintWriter w = resp.getWriter()) {

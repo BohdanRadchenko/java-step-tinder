@@ -23,32 +23,12 @@
     </style>
 </head>
 <body>
-<h1>Like or no?</h1>
-
-<div class="circle">
-    <img src="${avatar}" alt="Avatar" width="80" height="80">
-</div>
-
-<div class="button">
-    <button onclick="handleButtonClick('Yes')">Yes</button>
-    <button onclick="handleButtonClick('No')">No</button>
-</div>
-<div id="result"></div>
-
-<script>
-    function handleButtonClick(response) {
-        console.log('Нажата кнопка: ' + response);
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', window.location.href, true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                document.getElementById('result').innerHTML = xhr.responseText;
-            }
-        };
-        xhr.send('response=' + response);
-    }
-</script>
-
+<img src="${avatar}" alt="User Avatar">
+<form method="post" action="/users">
+    <input type="hidden" name="userFrom" value="${userFrom}">
+    <input type="hidden" name="userTo" value="${userTo}">
+    <button type="submit" name="response" value="Yes">Yes</button>
+    <button type="submit" name="response" value="No">No</button>
+</form>
 </body>
 </html>

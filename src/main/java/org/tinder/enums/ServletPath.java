@@ -8,7 +8,8 @@ public enum ServletPath {
     LOGOUT("/logout"),
     MESSAGES("/messages/*"),
     PROFILE("/profile"),
-    USERS("/users");
+    USERS("/users"),
+    LIKED("/liked");
 
     private final String path;
 
