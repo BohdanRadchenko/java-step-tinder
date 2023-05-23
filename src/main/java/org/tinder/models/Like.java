@@ -4,7 +4,7 @@ import org.tinder.interfaces.Model;
 
 
 public record Like(Integer likeId, int userFromId, int userToId, boolean isLiked, boolean isMatch) implements Model {
-    public Like createUnsafe(int userFromId, int userToId, boolean isLiked) {
+    public static Like createUnsafe(int userFromId, int userToId, boolean isLiked) {
         return new Like(null, userFromId, userToId, isLiked, false);
     }
     @Override

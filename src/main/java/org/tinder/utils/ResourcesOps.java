@@ -8,7 +8,7 @@ public class ResourcesOps {
         return condition && string.startsWith("/") ? string.substring(1) : string;
     }
     public static String dir(String dir) {
-        dir = substringFirst(dir, OsUtil.isWindows());
+        dir = substringFirst(dir, !OsUtil.isWindows());
         try {
             String path = Objects.requireNonNull(ResourcesOps.class
                             .getClassLoader()
