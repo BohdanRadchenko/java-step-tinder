@@ -23,7 +23,7 @@
     </style>
 </head>
 <body>
-<h1>Confirmation</h1>
+<h1>Like or no?</h1>
 
 <div class="circle">
     <img src="${avatar}" alt="Avatar" width="80" height="80">
@@ -37,9 +37,9 @@
 
 <script>
     function handleButtonClick(response) {
-        console.log('Button clicked: ' + response);
+        console.log('Нажата кнопка: ' + response);
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/process-response', true);
+        xhr.open('POST', window.location.href, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
