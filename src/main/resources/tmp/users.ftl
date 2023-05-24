@@ -1,48 +1,52 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Like or no?</title>
-    <style>
-        .rectangle {
-            width: 200px;
-            height: 300px;
-            background-color: #e0e0e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .rectangle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .button-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-        .button {
-            padding: 10px 20px;
-            margin: 0 5px;
-        }
-    </style>
-</head>
-<body>
-<div class="rectangle">
-    <img src="${avatar}" alt="User Avatar">
-</div>
-<form method="post" action="/users">
-    <input type="hidden" name="userFrom" value="${userFrom}">
-    <input type="hidden" name="userTo" value="${userTo}">
-    <div class="button-container">
-        <button type="submit" name="response" value="Yes" class="button">Yes</button>
-        <button type="submit" name="response" value="No" class="button">No</button>
-    </div>
-</form>
-</body>
-</html>
+<#import "common/template.ftl" as t>
+<#import "common/links.ftl" as links>
+<#import "common/script.ftl" as script>
+<@t.page>
+    <@t.head title="Users">
+        <@links.fac/>
+        <style>
+            .newRect {
+                width: 300px;
+                height: 450px;
+                background-color: #e0e0e0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+            }
+            .newRect img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        </style>
+    </@t.head>
+
+    <@t.body_auth>
+        <#include "componnets/forms/profile_form.ftl">
+        <div class="container">
+            <div class="newRect">
+                <#if avatar??>
+                    <img src="${avatar}" alt="Avatar">
+                </#if>
+
+            </div>
+            <form method="post" action="/users">
+                <input type="hidden" name="userFrom" value="${userFrom}">
+                <input type="hidden" name="userTo" value="${userTo}">
+                <div style="text-align: center;">
+                    <#if name??>
+                        <h1>${name}</h1>
+                    </#if>
+                    <#if prof??>
+                        <h1>${prof}</h1>
+                    </#if>
+                </div>
+                <div class="button-container">
+                    <button type="submit" name="response" value="Yes" class="button"><span class="fa fa-heart"></span> Like</button>
+                    <button type="submit" name="response" value="No" class="button"><span class="fa fa-times"></span> Dislike</button>
+                </div>
+            </form>
+        </div>
+    </@t.body_auth>
+</@t.page>

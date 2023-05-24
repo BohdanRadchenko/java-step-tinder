@@ -10,33 +10,39 @@
         <#include "componnets/forms/profile_form.ftl">
         <div class="container">
             <div class="row">
-                <div class="col-8 offset-2">
-                    <div class="panel panel-default user_panel">
-                        <div class="panel-heading">
+                <div>
+                    <div>
+                        <div class="panel-heading" style="text-align: center;">
                             <h3 class="panel-title">User List</h3>
                         </div>
                         <div class="panel-body">
                             <div class="table-container">
                                 <table class="table-users table" border="0">
-                                    <#list users>
+                                    <#list likedUsers>
                                         <tbody>
                                         <#items as item>
                                             <tr>
                                                 <td width="10">
                                                     <div class="avatar-img">
-                                                        <img class="img-circle" src=${item.pathPhoto}>
+                                                        <#if item.avatar() ??>
+                                                            <img class="img-circle" src="${item.avatar()}" alt="Avatar">
+                                                        </#if>
                                                     </div>
-
                                                 </td>
                                                 <td class="align-middle">
-                                                    ${item.login}
+                                                    <#if item.firstName() ??>
+                                                        ${item.firstName()}
+                                                    </#if>
                                                 </td>
                                                 <td class="align-middle">
-                                                    ${item.profession}
+                                                    <#if item.lastName() ??>
+                                                        ${item.lastName()}
+                                                    </#if>
                                                 </td>
                                                 <td class="align-middle">
-                                                    Last Login: ${item.lastLogin}<br><small
-                                                            class="text-muted">${item.daysAgo}</small>
+                                                    <#if item.profession() ??>
+                                                        ${item.profession()}
+                                                    </#if>
                                                 </td>
                                             </tr>
                                         </#items>

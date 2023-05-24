@@ -54,7 +54,8 @@ public class LikedServlet extends ServicesServlet {
 
 
         try (PrintWriter w = resp.getWriter()) {
-            Template template = FMTemplate.getTemplate("liked.ftl");
+//            Template template = FMTemplate.getTemplate("liked.ftl");
+            Template template = FMTemplate.getTemplate("people-list.ftl");
             template.process(data, w);
         } catch (TemplateException e) {
             throw new RuntimeException(e);

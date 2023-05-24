@@ -38,20 +38,25 @@ public class UsersServlet extends ServicesServlet {
     private void renderPage(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HashMap<String, Object> data = new HashMap<>();
         String token = CookieWorker.getCookieOrThrow(req, CookieNames.AUTH_TOKEN);
-        User currentUser = services.user.login(token);
         try {
-            data.put("userFrom", currentUser.id());
-            User oneForLike = services.user.getById(services.likeService.oneUserForLikes(currentUser.id()));
-            data.put("userTo", oneForLike.id());
-            data.put("avatar", oneForLike.avatar());
-        } catch (Exception e) {
-            Responses.redirect(resp, ServletPath.LIKED);
+            User currentUser = services.user.login(token);
+            try {
+                data.put("userFrom", currentUser.id());
+                User oneForLike = services.user.getById(services.likeService.oneUserForLikes(currentUser.id()));
+                data.put("userTo", oneForLike.id());
+                data.put("avatar", oneForLike.avatar());
+            } catch (Exception e) {
+                Responses.redirect(resp, ServletPath.LIKED);
+            }
+        } catch (IllegalArgumentException ex) {
+            Responses.redirect(resp, ServletPath.LOGIN);
         }
+
 
         try (PrintWriter w = resp.getWriter()) {
             Template template = FMTemplate.getTemplate("users.ftl");
             template.process(data, w);
-        } catch (TemplateException e) {
+        } catch (Exception e) {
             Responses.redirect(resp, ServletPath.LIKED);
         }
     }
