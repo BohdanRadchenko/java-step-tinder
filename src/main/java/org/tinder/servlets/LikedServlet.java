@@ -2,6 +2,8 @@ package org.tinder.servlets;
 
 import freemarker.template.*;
 import org.tinder.enums.CookieNames;
+import org.tinder.enums.ServletPath;
+import org.tinder.exceptions.DatabaseException;
 import org.tinder.models.User;
 import org.tinder.services.Services;
 import org.tinder.utils.*;
@@ -10,6 +12,7 @@ import javax.servlet.http.*;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class LikedServlet extends ServicesServlet {
     public LikedServlet(Services services) {
@@ -24,21 +27,31 @@ public class LikedServlet extends ServicesServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HashMap<String, Object> data = new HashMap<>();
-        String token = CookieWorker.getCookieOrThrow(req, CookieNames.AUTH_TOKEN);
-        User currentUser = services.user.login(token);
-
         try {
-            LinkedList<Integer> likedUsers = services.likeService.allLikedUsers(currentUser.id());
-            HashMap<String, User> users = new HashMap<>();
-            for (Integer userId : likedUsers) {
-                User user = services.user.getById(userId);
-                users.put(userId.toString(), user);
+            String token = CookieWorker.getCookieOrThrow(req, CookieNames.AUTH_TOKEN);
+            User currentUser = services.user.login(token);
+
+            try {
+                ArrayList<User> likedUsers = services.likeService.allLikedUsers(currentUser.id())
+                        .stream()
+                        .map(userId -> {
+                            try {
+                                return services.user.getById(userId);
+                            } catch (DatabaseException ex) {
+                                return null;
+                            }
+                        })
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toCollection(ArrayList::new));
+
+                data.put("likedUsers", likedUsers);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-            data.put("likedUsers", likedUsers);
-            data.put("users", users);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            Responses.redirect(resp, ServletPath.LOGIN);
         }
+
 
         try (PrintWriter w = resp.getWriter()) {
             Template template = FMTemplate.getTemplate("liked.ftl");

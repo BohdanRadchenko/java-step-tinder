@@ -53,8 +53,8 @@ public class UserService {
                 throw new IllegalArgumentException("Invalid login data");
             }
             return user;
-        } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Invalid login data", ex);
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Token has already expired", ex);
         }
     }
 

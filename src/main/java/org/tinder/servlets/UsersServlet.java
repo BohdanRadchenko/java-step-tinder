@@ -2,6 +2,7 @@ package org.tinder.servlets;
 
 import freemarker.template.*;
 import org.tinder.enums.CookieNames;
+import org.tinder.enums.ServletPath;
 import org.tinder.models.*;
 import org.tinder.services.Services;
 import org.tinder.utils.*;
@@ -29,7 +30,7 @@ public class UsersServlet extends ServicesServlet {
                         Integer.parseInt(req.getParameter("userTo")),
                         req.getParameter("response").equals("Yes")));
         } catch (Exception e) {
-            resp.sendRedirect("/liked");
+            Responses.redirect(resp, ServletPath.LIKED);
         }
         renderPage(req, resp);
     }
@@ -44,14 +45,14 @@ public class UsersServlet extends ServicesServlet {
             data.put("userTo", oneForLike.id());
             data.put("avatar", oneForLike.avatar());
         } catch (Exception e) {
-            resp.sendRedirect("/liked");
+            Responses.redirect(resp, ServletPath.LIKED);
         }
 
         try (PrintWriter w = resp.getWriter()) {
             Template template = FMTemplate.getTemplate("users.ftl");
             template.process(data, w);
         } catch (TemplateException e) {
-            resp.sendRedirect("/liked");
+            Responses.redirect(resp, ServletPath.LIKED);
         }
     }
 

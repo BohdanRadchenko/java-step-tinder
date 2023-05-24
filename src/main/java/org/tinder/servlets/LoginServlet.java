@@ -47,7 +47,7 @@ public class LoginServlet extends ServicesServlet {
             JWTToken token = JWTToken.makeAccess(user);
 
             CookieWorker.auth(resp, token.sign());
-            Responses.redirect(resp, ServletPath.HOME);
+            Responses.redirect(resp, ServletPath.USERS);
         } catch (NotFoundException ex) {
             Responses.notFound(resp, ex.getMessage());
         } catch (IllegalArgumentException ex) {

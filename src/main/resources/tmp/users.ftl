@@ -7,29 +7,42 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Like or no?</title>
     <style>
-        .circle {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
+        .rectangle {
+            width: 200px;
+            height: 300px;
             background-color: #e0e0e0;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+        }
+        .rectangle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
         }
         .button {
             padding: 10px 20px;
-            margin-top: 10px;
+            margin: 0 5px;
         }
     </style>
 </head>
 <body>
-<img src="${avatar}" alt="User Avatar">
+<div class="rectangle">
+    <img src="${avatar}" alt="User Avatar">
+</div>
 <form method="post" action="/users">
     <input type="hidden" name="userFrom" value="${userFrom}">
     <input type="hidden" name="userTo" value="${userTo}">
-    <button type="submit" name="response" value="Yes">Yes</button>
-    <button type="submit" name="response" value="No">No</button>
+    <div class="button-container">
+        <button type="submit" name="response" value="Yes" class="button">Yes</button>
+        <button type="submit" name="response" value="No" class="button">No</button>
+    </div>
 </form>
 </body>
-
 </html>
