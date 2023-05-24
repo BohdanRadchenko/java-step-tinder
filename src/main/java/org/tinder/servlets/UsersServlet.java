@@ -45,6 +45,8 @@ public class UsersServlet extends ServicesServlet {
                 User oneForLike = services.user.getById(services.likeService.oneUserForLikes(currentUser.id()));
                 data.put("userTo", oneForLike.id());
                 data.put("avatar", oneForLike.avatar());
+                data.put("name", oneForLike.firstName());
+                data.put("prof", oneForLike.profession());
             } catch (Exception e) {
                 Responses.redirect(resp, ServletPath.LIKED);
             }

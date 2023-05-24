@@ -49,12 +49,21 @@ public class LikeDao implements DAO<Like> {
 
     @Override
     public boolean save(Like model) throws Exception {
-        boolean res = insertNew(model);
-        matchCheck(
-                model.userFromId(),
-                model.userToId()
+        return !isExist(model) && insertNew(model);
+    }
+
+    public boolean isExist(Like model) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement(
+                """
+                    SELECT is_liked
+                    FROM likes
+                    WHERE user_from = ? AND user_to = ?
+                    """
         );
-        return res;
+        ps.setInt(1, model.userFromId());
+        ps.setInt(2, model.userToId());
+        ResultSet rs = ps.executeQuery();
+        return rs.next();
     }
 
     private boolean insertNew(Like model) throws SQLException {
@@ -73,7 +82,12 @@ public class LikeDao implements DAO<Like> {
         ps.setInt(2, model.userToId());
         ps.setBoolean(3, model.isLiked());
         ps.setBoolean(4, model.isMatch());
-        return ps.execute();
+        boolean success = ps.execute();
+        matchCheck(
+                model.userFromId(),
+                model.userToId()
+        );
+        return success;
     }
 
     private void matchCheck(int id1, int id2) throws SQLException {
