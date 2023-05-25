@@ -23,11 +23,13 @@
                                         <#items as item>
                                             <tr>
                                                 <td width="10">
+                                                    <a href="/new_chat?userID=${item.id()}">
                                                     <div class="avatar-img">
                                                         <#if item.avatar() ??>
                                                             <img class="img-circle" src="${item.avatar()}" alt="Avatar">
                                                         </#if>
                                                     </div>
+                                                    </a>
                                                 </td>
                                                 <td class="align-middle">
                                                     <#if item.firstName() ??>

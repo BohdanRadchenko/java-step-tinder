@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class MessageService {
     private final MessageDao messageDao;
@@ -46,7 +47,7 @@ public class MessageService {
                 User user = getUserFromCache(userHashMap, rs);
                 messages.add(new Message(
                         rs.getInt("message_id"),
-                        new Chat(rs.getInt(chat_id)),
+                        new Chat(rs.getInt("chat_id")),
                         user,
                         rs.getString("content"),
                         rs.getTimestamp("created_at").toLocalDateTime()
@@ -68,6 +69,14 @@ public class MessageService {
         }
         return user;
 
+    }
+
+    public Optional<Integer> createNewChat(Integer currentUsersId, Integer userId){
+        try {
+            return messageDao.getChatId(currentUsersId, userId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
