@@ -91,6 +91,56 @@ public class MessageDao implements DAO<Message> {
         return preparedStatement.execute();
     }
 
+    public Optional<Integer>  getChatId(Integer currentUsersId, Integer userId) throws SQLException {
+        PreparedStatement preparedStatement = conn.prepareStatement("""
+                SELECT                    
+                    cu.chat_id,
+                    cu.user_id,
+                    cu2.user_id
+                FROM chat_user cu
+                    JOIN chat_user cu2
+                    on cu.chat_id=cu2.chat_id                    
+                WHERE cu.user_id = (?) and cu2.user_id = (?)
+                """);
+        preparedStatement.setInt(1, currentUsersId);
+        preparedStatement.setInt(2, userId);
+        ResultSet rs = preparedStatement.executeQuery();
+        if (rs.next()){
+            return Optional.of(rs.getInt("chat_id"));
+        }else {
+            return createNewChat(currentUsersId, userId);
+        }
+    }
+
+    private Optional<Integer> createNewChat(Integer currentUsersId, Integer userId) throws SQLException {
+        conn.setAutoCommit(false);
+        PreparedStatement ps1 = conn.prepareStatement("""
+                INSERT INTO
+                    chat_id (user_id, name)
+                (SELECT
+                    u.id,
+                    u.login
+                FROM users u
+                WHERE u.id = ?)
+                """);
+        ps1.setInt(1, currentUsersId);
+        ps1.execute();
+
+        PreparedStatement ps2 = conn.prepareStatement("INSERT INTO chat_user (chat_id, user_id) (SELECT max(ci.id),(?)  FROM chat_id ci)");
+        ps2.setInt(1, currentUsersId);
+        ps2.execute();
+
+        PreparedStatement ps3 = conn.prepareStatement("INSERT INTO chat_user (chat_id, user_id) (SELECT max(ci.id),(?)  FROM chat_id ci)");
+        ps2.setInt(1, userId);
+        ps2.execute();
+
+        conn.commit();
+
+        return getChatId(currentUsersId, userId);
+
+
+    }
+
 
 
 }

@@ -7,6 +7,7 @@ public enum ServletPath {
     REGISTER("/register"),
     LOGOUT("/logout"),
     MESSAGES("/messages/*"),
+    NEW_CHAT("/new_chat"),
     PROFILE("/profile"),
     USERS("/users"),
     LIKED("/liked");
