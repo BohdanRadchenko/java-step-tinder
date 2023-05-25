@@ -38,6 +38,8 @@ public class TinderApp {
             server.addServlet(new LogoutServlet(), ServletPath.LOGOUT, new AuthRequestFilter(services));
             server.addServlet(new LoginServlet(services), ServletPath.LOGIN);
             server.addServlet(new RegisterServlet(services), ServletPath.REGISTER);
+            server.addServlet(new UsersServlet(services), ServletPath.USERS);
+            server.addServlet(new LikedServlet(services), ServletPath.LIKED);
 
             server.addServlet(new MessageServlet(services), ServletPath.MESSAGES, new AuthRequestFilter(services), new StaticResourcesFilter(services));
             // profile

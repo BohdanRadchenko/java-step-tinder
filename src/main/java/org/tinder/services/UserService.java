@@ -53,8 +53,8 @@ public class UserService {
                 throw new IllegalArgumentException("Invalid login data");
             }
             return user;
-        } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Invalid login data", ex);
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Token has already expired", ex);
         }
     }
 
@@ -93,4 +93,13 @@ public class UserService {
             throw new DatabaseException(ex);
         }
     }
+
+    public void insertUserLoginHistory(User user){
+        try {
+            db.insertUserLoginHistory(user);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

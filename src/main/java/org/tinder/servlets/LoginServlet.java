@@ -42,11 +42,12 @@ public class LoginServlet extends ServicesServlet {
         String password = req.getParameter(ServletParams.PASSWORD.param());
         try {
             User user = services.user.login(email, password);
+            services.user.insertUserLoginHistory(user);
 
             JWTToken token = JWTToken.makeAccess(user);
 
             CookieWorker.auth(resp, token.sign());
-            Responses.redirect(resp, ServletPath.HOME);
+            Responses.redirect(resp, ServletPath.USERS);
         } catch (NotFoundException ex) {
             Responses.notFound(resp, ex.getMessage());
         } catch (IllegalArgumentException ex) {

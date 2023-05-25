@@ -5,9 +5,8 @@ import org.tinder.models.User;
 import org.tinder.utils.SqlRequest;
 import org.tinder.utils.SqlString;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class UserDao implements DAO<User> {
@@ -110,5 +109,43 @@ public class UserDao implements DAO<User> {
 
     public static UserDao of(Connection connection) {
         return new UserDao(connection);
+    }
+
+    public void insertUserLoginHistory(User user) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user_login_history (user_id, login_time) values(?,?)");
+        preparedStatement.setObject(1, user.id());
+        preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+        preparedStatement.execute();
+    }
+
+    public ResultSet getUsersLiked(int numberPage) throws SQLException {
+        //TODO: змінити запит, щоб в нього потрапляли тільки юзери які були лайкнуті
+        //TODO: такий запит вже імплементований в LikeService
+        return connection.prepareStatement("""
+                        SELECT
+                            u.id as user_id,
+                            u.login,
+                            u.email,
+                            u.password,
+                            u.first_name,
+                            u.last_name,
+                            u.profession,
+                            u.avatar,
+                            max(ulh.login_time) as lastLogin_time
+                        FROM
+                            users as  u
+                              LEFT JOIN user_login_history as ulh
+                                on u.id = ulh.user_id
+                        GROUP BY
+                            u.id,
+                            u.login,
+                            u.email,
+                            u.password,
+                            u.first_name,
+                            u.last_name,
+                            u.profession,
+                            u.avatar
+                        ORDER BY u.id                       
+                        """).executeQuery();
     }
 }
